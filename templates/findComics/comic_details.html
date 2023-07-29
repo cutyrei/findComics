@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-3">
+    <div>
+        <h1>{{ comic.title }}</h1>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <td>작가</td>
+                <td>출판사</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ comic.author }}</td>
+                <td>{{ comic.publisher }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div>
+        <p><h3>{{ comic.bookcase }}</h3>에 있습니다.</p>
+    </div>
+    <div id="mapViewer">
+        <img id="mapViewerImg" src="" alt="" />
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="/static/js/mapViewer.js"></script>
+<script type="text/javascript">
+    const bookcase = '{{comic.bookcase}}';
+    document.addEventListener("DOMContentLoaded", function(event) {
+        mapViewer(bookcase);
+    });
+</script>
+{% endblock %}
