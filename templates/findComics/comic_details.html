@@ -2,27 +2,32 @@
 {% block content %}
 <div class="container my-3">
     <div>
-        <h1>{{ comic.title }}</h1>
+        <a href="{% url 'findComics:index' %}">&lt;&lt; 처음으로 돌아가기</a>
+    </div>
+    <div class="myS-result">
+        <p><span class="myS-num">{{ comic.title }}</span> 책은 <span class="myS-num">{{ comic.bookcase }}</span> 책장에 있어요.</p>
     </div>
     <table class="table">
         <thead>
             <tr>
-                <td>작가</td>
-                <td>출판사</td>
+                <th>작가</th>
+                <th>출판사</th>
+                <th>보관 책장</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>{{ comic.author }}</td>
                 <td>{{ comic.publisher }}</td>
+                <td>{{ comic.bookcase }}</td>
             </tr>
         </tbody>
     </table>
-    <div>
-        <p><h3>{{ comic.bookcase }}</h3>에 있습니다.</p>
-    </div>
-    <div id="mapViewer">
-        <img id="mapViewerImg" src="" alt="" />
+    <div class="myS-viewer">
+        <span>위치 보기</span>
+        <div id="mapViewer">
+            <img id="mapViewerImg" src="" alt="" />
+        </div>
     </div>
 </div>
 {% endblock %}

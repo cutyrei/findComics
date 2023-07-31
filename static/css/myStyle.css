@@ -1,0 +1,38 @@
+.myS-headline > p {
+    padding: 2rem 0.75rem;
+    text-align: center;
+    font-size: 3rem;
+}
+.myS-headline > span {
+    padding: 0.75rem 0;
+    font-size: 1.2rem;
+}
+.myS-option {
+    margin-right: 4px;
+    width: 110px;
+    padding: 0.375rem 0.75rem;
+    text-align: center;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+}
+.myS-result {
+    margin-top: 2rem;
+    border-bottom: 2px solid #000;
+    padding: 0.375rem 0.75rem;
+}
+.myS-num {
+    font-size: 2rem;
+    color: #4195df;
+}
+.myS-result > p {
+    font-size: 1.5rem;
+}
+.myS-viewer {
+    text-align: center;
+}
+.myS-viewer > span {
+    display: block;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    padding: 1rem 0.75rem;
+}

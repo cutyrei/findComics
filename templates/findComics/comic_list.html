@@ -3,17 +3,22 @@
 
 {% block content %}
 <div class="container my-3">
+    <div class="myS-headline">
+        <p>책이 보관된 위치를 찾아 드려요.</p>
+        <span>아래의 검색창에서 책이 보관된 책장을 찾을 수 있어요. 그런데, 다른 분이 먼저 그 책을 읽고 있을 수도 있어요.</span>
+    </div>
     <!-- searchForm -->
     <div class="row justify-content-end my-3">
         <div class="col-4 input-group">
-            <input type="text" class="form-control kw" value="{{ kw|default_if_none:'' }}" placeholder="제목을 입력하고 '찾기' 버튼을 눌러주세요.">
-            <div class="input-group-append">
+            <div class="myS-option">도서 제목 ►</div>
+            <input type="text" class="form-control kw" value="{{ kw|default_if_none:'' }}" placeholder="이곳에 찾으려는 책의 제목을 입력한 후 오른쪽의 '찾기' 버튼을 눌러주세요.">
+            <div class="input-group-append" style="margin-left: 5px;">
                 <button class="btn btn-outline-secondary" type="button" id="btn_search">찾기</button>
             </div>
         </div>
     </div>
 
-    <p>총 {{ comic_list.paginator.count }}건이 검색 되었습니다.</p>
+    <p class="myS-result">총 <span class="myS-num">{{ comic_list.paginator.count }}</span>&nbsp;권의 책을 찾았어요.</p>
 
     <!-- list -->
     <table class="table">
@@ -23,7 +28,7 @@
                 <th>제목</th>
                 <th>작가</th>
                 <th>출판사</th>
-                <th>위치</th>
+                <th>위치 보기</th>
             </tr>
         </thead>
         <tbody>
