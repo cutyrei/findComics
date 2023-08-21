@@ -5,6 +5,7 @@ from . import views
 app_name = 'findComics'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.main, name='main'),
+    path('list/', views.index, name='index'),
     path('<int:comic_id>/', views.details, name='details'),
 ]
