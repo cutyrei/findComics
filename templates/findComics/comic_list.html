@@ -2,108 +2,102 @@
 {% load comic_filter %}
 
 {% block content %}
-<div class="container my-3">
-    <div>
-        <a href="{% url 'findComics:main' %}">&lt;&lt; 처음으로 돌아가기</a>
-    </div>
-    <div class="myS-headline">
-        <p>책이 보관된 위치를 찾아 드려요.</p>
-        <span>아래의 검색창에서 책이 보관된 책장을 찾을 수 있어요. 그런데, 다른 분이 먼저 그 책을 읽고 있을 수도 있어요.</span>
-    </div>
-    <!-- searchForm -->
-    <form id="searchForm" method="get" action="{% url 'findComics:index' %}" class="row justify-content-end my-3">
-        <div class="col-4 input-group">
-            <div class="myS-option">도서 제목 ►</div>
-            <input type="text" class="form-control kw" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
-            <div class="input-group-append" style="margin-left: 5px;">
-                    <button class="btn btn-outline-secondary" type="button" id="btn_search">찾기</button>
+<div class="container my-3" style="min-width: 1400px!important;">
+    <div style="position: fixed; right: 10px;">
+        <div class="myS-viewer">
+            <div id="mapViewer">
+                <img id="mapViewerImg" height="900px" src="/static/img/map_default.jpg" alt="" />
             </div>
         </div>
-    </form>
+    </div>
 
-<!--    <div class="row justify-content-end my-3">-->
-<!--        <div class="col-4 input-group">-->
-<!--            <div class="myS-option">도서 제목 ►</div>-->
-<!--            <input type="text" class="form-control kw" value="{{ kw|default_if_none:'' }}" placeholder="이곳에 찾으려는 책의 제목을 입력한 후 오른쪽의 '찾기' 버튼을 눌러주세요.">-->
-<!--            <div class="input-group-append" style="margin-left: 5px;">-->
-<!--                <button class="btn btn-outline-secondary" type="button" id="btn_search">찾기</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <div style="float: left; min-width: 1000px;">
+        <a href="{% url 'findComics:main' %}">&lt;&lt; 처음으로 돌아가기</a>
+        <!-- searchForm -->
+        <form id="searchForm" method="get" action="{% url 'findComics:index' %}" class="row justify-content-end my-3">
+            <div class="col-4 input-group">
+                <div class="myS-option">도서 제목 ►</div>
+                <input type="text" class="form-control kw" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
+                <div class="input-group-append" style="margin-left: 5px;">
+                        <button class="btn btn-outline-secondary" type="button" id="btn_search">찾기</button>
+                </div>
+            </div>
+        </form>
 
-    <p class="myS-result">총&nbsp;<span class="myS-num">{{ comic_list.paginator.count }}</span>&nbsp;권의 책을 찾았어요.</p>
+        <p class="myS-result">총&nbsp;<span class="myS-num">{{ comic_list.paginator.count }}</span>&nbsp;권의 책을 찾았어요.</p>
 
-    <!-- list -->
-    <table class="table">
-        <thead>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작가</th>
-                <th>출판사</th>
-                <th>위치 보기</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% if comic_list %}
-        {% for comic in comic_list %}
-            <tr>
-                <td>{{ comic_list.paginator.count|sub:comic_list.start_index|sub:forloop.counter0|add:1 }}</td>
-                <td>{{ comic.title }}</td>
-                <td>{{ comic.author }}</td>
-                <td>{{ comic.publisher }}</td>
-                <td><a href="{% url 'findComics:details' comic.id %}">{{ comic.bookcase }}</a></td>
-            </tr>
-        {% endfor %}
-        {% else %}
-        <tr>
-            <td colspan="5">
-                <span style="color: red;">"{{ kw }}"</span>&nbsp;검색어로 책을 찾을 수 없어요.<br />
-                띄어쓰기를 다시 확인하시거나, 카운터로 문의해 주세요.
-            </td>
-        </tr>
-        {% endif %}
-        </tbody>
-    </table>
-
-    <!-- paging start -->
-    <ul class="pagination justify-content-center">
-        <!-- prev -->
-        {% if comic_list.has_previous %}
-        <li class="page-item">
-            <a class="page-link" data-page="{{ comic_list.previous_page_number }}" href="#">이전</a>
-        </li>
-        {% else %}
-        <li class="page-item disabled">
-            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
-        </li>
-        {% endif %}
-        <!-- page list -->
-        {% for page_number in comic_list.paginator.page_range %}
-        {% if page_number >= comic_list.number|add:-5 and page_number <= comic_list.number|add:5 %}
-            {% if page_number == comic_list.number %}
-                <li class="page-item active" aria-current="page">
-                    <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
-                </li>
+        <!-- list -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작가</th>
+                    <th>출판사</th>
+                    <th>위치 보기</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if comic_list %}
+            {% for comic in comic_list %}
+                <tr>
+                    <td>{{ comic_list.paginator.count|sub:comic_list.start_index|sub:forloop.counter0|add:1 }}</td>
+                    <td>{{ comic.title }}</td>
+                    <td>{{ comic.author }}</td>
+                    <td>{{ comic.publisher }}</td>
+                    <td class="case" onclick="mapview('{{ comic.bookcase }}')"><a href="#">{{ comic.bookcase }}</a></td>
+                </tr>
+            {% endfor %}
             {% else %}
-                <li class="page-item">
-                    <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
-                </li>
+            <tr>
+                <td colspan="5">
+                    <span style="color: red;">"{{ kw }}"</span>&nbsp;검색어로 책을 찾을 수 없어요.<br />
+                    띄어쓰기를 다시 확인하시거나, 카운터로 문의해 주세요.
+                </td>
+            </tr>
             {% endif %}
-        {% endif %}
-        {% endfor %}
-        <!-- next -->
-        {% if comic_list.has_next %}
-        <li class="page-item">
-            <a class="page-link" data-page="{{ comic_list.next_page_number }}" href="#">다음</a>
-        </li>
-        {% else %}
-        <li class="page-item disabled">
-            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
-        </li>
-        {% endif %}
-    </ul>
-    <!-- paging end -->
+            </tbody>
+        </table>
+
+        <!-- paging start -->
+        <ul class="pagination justify-content-center">
+            <!-- prev -->
+            {% if comic_list.has_previous %}
+            <li class="page-item">
+                <a class="page-link" data-page="{{ comic_list.previous_page_number }}" href="#">이전</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+            </li>
+            {% endif %}
+            <!-- page list -->
+            {% for page_number in comic_list.paginator.page_range %}
+            {% if page_number >= comic_list.number|add:-5 and page_number <= comic_list.number|add:5 %}
+                {% if page_number == comic_list.number %}
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+            {% endfor %}
+            <!-- next -->
+            {% if comic_list.has_next %}
+            <li class="page-item">
+                <a class="page-link" data-page="{{ comic_list.next_page_number }}" href="#">다음</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+            </li>
+            {% endif %}
+        </ul>
+        <!-- paging end -->
+    </div>
 </div>
 
 <form id="searchForm2" method="get" action="{% url 'findComics:index' %}">
@@ -125,5 +119,11 @@
             $("#searchForm2").submit();
         });
     });
+</script>
+<script type="text/javascript" src="/static/js/mapViewer.js"></script>
+<script type="text/javascript">
+    function mapview(bookcase) {
+        mapViewer(bookcase);
+    };
 </script>
 {% endblock %}

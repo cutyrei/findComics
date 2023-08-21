@@ -10,6 +10,8 @@ function getImgUrl(letter) {
             return '/static/img/map03.jpg';
         case 'D':
             return '/static/img/map04.jpg';
+        case 'E':
+            return '/static/img/map05.jpg';
         default:
             return '/static/img/map_default.jpg';
     }
